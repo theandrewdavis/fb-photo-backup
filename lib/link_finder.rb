@@ -16,17 +16,24 @@ class LinkFinder
     @driver.find_element(:css, '#pagelet_welcome_box a').click
     Wait.new.until { @driver.find_element(:css, '#navItem_photos a') }.click
 
+    # puts total_photos
+
     # Scroll until all the photos are loaded and return their links
-    scroll_down
-    photos = @driver.find_elements(:css, '#pagelet_photos_of_me a.uiMediaThumb')
+    photos = []
+    total = @driver.find_element(:css, '#navItem_photos .countValue').text.to_i
+    loop do
+      scroll
+      photos = photos | find_photos
+      break if photos.size >= total
+    end
     @logger.link_finder_done(photos.size)
-    photos.map { |photo| clean_photo_link(photo['ajaxify']) }
+    return photos
 
   rescue Error::TimeOutError
     @logger.link_finder_error
     return []
   ensure
-    @driver.quit unless @driver.nil?
+    # @driver.quit unless @driver.nil?
   end
 
   private
@@ -46,6 +53,20 @@ class LinkFinder
     raise error
   end
 
+  def scroll
+    @driver.execute_script('window.scrollTo(0, document.body.scrollHeight)')
+  end
+  
+  def find_photos
+    photos = @driver.find_elements(:css, '#pagelet_photos_of_me a.uiMediaThumb')
+    puts "Found #{photos.size} photos"
+    photos.map { |photo| clean_photo_link(photo['ajaxify']) }
+  end
+  
+  def loading?
+    @driver.find_elements('#pagelet_photos_of_me .uiSimpleScrollingLoadingIndicator').size > 0
+  end
+  
   def scroll_down
     loop do
       begin
