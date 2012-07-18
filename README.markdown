@@ -7,7 +7,7 @@ I wanted a local backup of all the Facebook photos I'm tagged in. That way all m
 You'll need Firefox installed. Then download the .exe file, and in the command prompt run
 
 ```
-./fb_photo_download.exe email password target_folder
+./fb_photo_backup.exe email password target_folder
 ```
 
 Photos that already exist in the target folder won't be re-downloaded, so you can run the script again to get only new photos.
