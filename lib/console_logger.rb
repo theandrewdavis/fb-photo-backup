@@ -3,8 +3,9 @@ class ConsoleLogger
     print 'Finding photos...'
   end
 
-  def link_finder_done(number)
-    puts " #{number} found."
+  def link_finder_progress(done, total)
+    print "\rFinding photos... #{done} of #{total}."
+    print "\n" if done == total
   end
 
   def link_finder_invalid_login

@@ -7,7 +7,6 @@ class Downloader
 
   def download(path, links)
     return if links.nil? or links.empty?
-
     dir = Dir.new(path)
     links.each_with_index do |link, index|
       image_name = link.match(/([^\/]+$)/)[1]

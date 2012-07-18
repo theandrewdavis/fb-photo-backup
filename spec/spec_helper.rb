@@ -4,7 +4,8 @@ require 'tmpdir'
 require 'selenium-webdriver'
 
 def load_fixtures
-  fixtures = YAML::load_file('fixtures.yml')
+  fixture_path = File.join(File.dirname(__FILE__), 'fixtures.yml')
+  fixtures = YAML::load_file(fixture_path)
   @good_email = fixtures[:good_login][:email]
   @good_password = fixtures[:good_login][:password]
   @bad_email = fixtures[:bad_login][:email]

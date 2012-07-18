@@ -9,7 +9,7 @@ if defined?(Ocra)
   abort('Finished test execution')
 end
 
-usage = 'Usage: fb_photo_download.exe email password path_to_folder'
+usage = 'Usage: fb_photo_backup.exe email password path_to_folder'
 abort(usage) if ARGV[0].nil? or ARGV[1].nil? or ARGV[2].nil?
 
 logger = ConsoleLogger.new
