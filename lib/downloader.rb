@@ -5,25 +5,26 @@ class Downloader
     @logger = logger
   end
 
-  def download(path, links)
-    return if links.nil? or links.empty?
+  def download(path, photos)
+    return if photos.nil? or photos.empty?
     dir = Dir.new(path)
-    links.each_with_index do |link, index|
-      image_name = link.match(/([^\/]+$)/)[1]
+    photos.each_with_index do |photo, index|
+      image_type = photo[:url].match(/([^\.]+)$/)[1]
+      image_name = "#{photo[:id]}.#{image_type}"
       image_path = File.join(dir, image_name)
-      download_photo(link, image_path) unless dir.include?(image_name)
-      @logger.download_progress(index + 1, links.size)
+      download_photo(photo[:url], image_path) unless dir.include?(image_name)
+      @logger.download_progress(index + 1, photos.size)
     end
     @logger.download_errors(@errors) unless @errors.nil?
   end
 
   private
-  def download_photo(link, path)
-    open(link) do |stream|
+  def download_photo(url, path)
+    open(url) do |stream|
       File.open(path, 'wb') { |file| file.puts(stream.read) }
     end
   rescue OpenURI::HTTPError
     @errors ||= []
-    @errors << link
+    @errors << url
   end
 end

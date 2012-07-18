@@ -25,11 +25,11 @@ class LinkFinder
       @logger.link_finder_progress(photos.size, total)
       break if photos.size >= total
     end
-    return photos
+    photos
 
   rescue Error::TimeOutError
     @logger.link_finder_error
-    return []
+    []
   ensure
     @driver.quit unless @driver.nil?
   end
@@ -57,7 +57,7 @@ class LinkFinder
   
   def find_photos
     photos = @driver.find_elements(:css, '#pagelet_photos_of_me a.uiMediaThumb')
-    photos.map { |photo| clean_photo_link(photo['ajaxify']) }
+    photos.map { |photo| {id: photo['name'], url: clean_photo_link(photo['ajaxify'])} }
   end
 
   def clean_photo_link(link)

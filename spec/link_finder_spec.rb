@@ -18,9 +18,10 @@ describe LinkFinder do
   end
 
   it 'should get links when a valid email and password is used' do
-    logger = mock(link_finder_start: nil, link_finder_done: nil)
+    logger = mock(link_finder_start: nil, link_finder_progress: nil)
     links = LinkFinder.new(logger).find_links(@good_email, @good_password)
     links.size.should eq(200)
+    links[0].should eq(@photo_data)
   end
 
   it 'should show an error if no firefox is found' do

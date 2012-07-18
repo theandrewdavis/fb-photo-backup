@@ -12,5 +12,6 @@ def load_fixtures
   @bad_password = fixtures[:bad_login][:password]
   @raw_link = fixtures[:raw_link]
   @clean_link = fixtures[:clean_link]
-  @image_name = fixtures[:image_name]
+  @photo_data = fixtures[:photo_data]
+  @photo_name = fixtures[:photo_name]
 end

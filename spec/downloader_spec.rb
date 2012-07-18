@@ -13,16 +13,16 @@ describe Downloader do
   it 'should download a link' do
     downloader.expects(:open).once.yields(mock_stream)
     Dir.mktmpdir do |tmpdir|
-      downloader.download(tmpdir, [@clean_link])
-      Dir.new(tmpdir).include?(@image_name).should eq(true)
+      downloader.download(tmpdir, [@photo_data])
+      Dir.new(tmpdir).include?(@photo_name).should eq(true)
     end
   end
 
   it 'should skip already-downloaded files' do
     downloader.expects(:open).never
     Dir.mktmpdir do |tmpdir|
-      FileUtils.touch(File.join(tmpdir, @image_name))
-      downloader.download(tmpdir, [@clean_link])
+      FileUtils.touch(File.join(tmpdir, @photo_name))
+      downloader.download(tmpdir, [@photo_data])
     end
   end
 end
