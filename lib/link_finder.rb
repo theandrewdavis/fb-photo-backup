@@ -14,11 +14,12 @@ class LinkFinder
 
     # Go to profile page and choose the photos app
     @driver.find_element(:css, '#pagelet_welcome_box a').click
-    Wait.new.until { @driver.find_element(:css, '#navItem_photos a') }.click
+    Wait.new.until { @driver.find_element(:css, '.photos') }.click
 
     # Scroll until all the photos are loaded and return their links
     photos = []
-    total = @driver.find_element(:css, '#navItem_photos .countValue').text.to_i
+    totalElement = Wait.new.until { @driver.find_element(:css, '.fbPhotosRedesignNavCount') }
+    total = totalElement.text.to_i
     loop do
       scroll
       photos = photos | find_photos
@@ -54,7 +55,7 @@ class LinkFinder
   def scroll
     @driver.execute_script('window.scrollTo(0, document.body.scrollHeight)')
   end
-  
+
   def find_photos
     photos = @driver.find_elements(:css, '#pagelet_photos_of_me a.uiMediaThumb')
     photos.map { |photo| {id: photo['name'], url: clean_photo_link(photo['ajaxify'])} }
